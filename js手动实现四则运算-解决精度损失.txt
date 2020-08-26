@@ -1,0 +1,72 @@
+MathUtil = {
+       toInteger:function(num) {
+            var nums = this.scientificNotationToString(num) + "";
+            var match = /\./.exec(nums);
+            var placesLen = (match && match.index) ? nums.length - match.index - 1 : 0;
+            var inum = +(nums.replace('.', ''));
+            while (inum!==0 && inum/10 % 1 === 0) {
+                inum = inum/10;
+                placesLen--;
+            }
+            return [inum, placesLen];
+        },
+        toDecimal:function(numArr) {
+            //去掉小数位后面多余的0
+            /*while (numArr[0]/10 % 1 === 0 && numArr[1] > 0) {
+                numArr[0] = numArr[0]/10;
+                numArr[1]--;
+            }*/
+            var nums = (numArr[0] + "");
+            var p = nums.length - numArr[1];
+            //前面不够，补0
+            while (p < 1){
+                //nums = '0' + nums;
+                nums = nums.replace(/^(-?)(\d*)$/,'$10$2');
+                p ++;
+            }
+            //后面不够，补0
+            while(p > nums.length){
+                nums += '0';
+            }
+            var ipart = nums.substr(0, p);
+            return ( +(ipart + "." + nums.substr(p)));
+        },
+        calc: function(num1, num2, type){
+            var result = [];
+            var numA1 = this.toInteger(num1);
+            var numA2 = this.toInteger(num2);
+            switch (type){
+                case '*':
+                    result[0] = numA1[0] * numA2[0];
+                    result[1] = numA1[1] + numA2[1];
+                    break;
+                case "+":
+                    if(numA1[1] > numA2[1]){
+                        numA2[0] = numA2[0] * Math.pow(10, numA1[1] - numA2[1]);
+                        numA2[1] = numA1[1];
+                    }else{
+                        numA1[0] = numA1[0] * Math.pow(10, numA2[1] - numA1[1]);
+                        numA1[1] = numA2[1];
+                    }
+                    result[0] = numA1[0] + numA2[0];
+                    result[1] = numA1[1];
+                    break;
+                case "-":
+                    return this.calc(num1,-num2, "+");
+                case "/":
+                    var num = numA1[0]/numA2[0];
+                    var numA = this.toInteger(num);
+                    result[0] = numA[0];
+                    result[1] = numA[1] + numA1[1] - numA2[1];
+                    break;
+            }
+            return this.toDecimal(result);
+        },
+        calcAll: function(numArr, type){
+            var num = numArr[0];
+            for(var i=1; i<numArr.length; i++) {
+                num = this.calc(num, numArr[i], type);
+            }
+            return num;
+        }
+}

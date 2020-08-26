@@ -1,0 +1,26 @@
+//动态加载js脚本
+function load(url, callback){
+	var script = document.createElement("script");
+	script.type = "text/javascript";
+	if (script.readyState) { //IE
+		script.onreadystatechange = function(){
+			if (script.readyState === "loaded" ||
+					script.readyState === "complete") {
+				script.onreadystatechange = null;
+				callback();
+			} else if (script.readyState !== "loading") {
+				script.onreadystatechange = null;
+				callback();
+			}
+		};
+	} else {//Others
+		script.onload = function () {
+			callback();
+		};
+		script.onerror = function () {
+			callback();
+		};
+	}
+	script.src = "scripts/" + url + "?v=" + window.VERSION;
+	document.getElementsByTagName("head")[0].appendChild(script);
+}

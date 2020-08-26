@@ -1,0 +1,61 @@
+Git 操作命令
+
+从仓库下载到本地
+>git clone https://github.com/gavin-xuwenb/testVue.git
+
+查看状态 
+>git status
+
+全部添加
+>git add .  
+
+提交到本地仓库
+>git commit -m ‘description’
+
+推送到远程仓库
+>git push
+
+
+主要的几个命令
+git add # 将工作区的修改提交到暂存区
+git commit # 将暂存区的修改提交到当前分支
+git reset # 回退到某一个版本
+git stash # 保存某次修改
+git pull # 从远程更新代码
+git push # 将本地代码更新到远程分支上
+git reflog # 查看历史命令
+git status # 查看当前仓库的状态
+git diff # 查看修改
+git log # 查看提交历史
+git revert # 回退某个修改
+
+
+git reset用法
+git reset根据–soft –mixed –hard，会对working tree和index和HEAD进行重置
+$ git reset HEAD^
+回退版本，一个^表示一个版本，可以多个，另外也可以使用 git reset HEAD~n这种形式。
+也可以回退到指定版本：
+$ git reset commit-id
+
+soft 参数：git reset --soft HEAD~1 意为将版本库软回退1个版本，所谓软回退表示将本地版本库的头指针全部重置到指定版本，且将这次提交之后的所有变更都移动到暂存区
+
+默认的mixed参数：git reset HEAD～1 意为将版本库回退1个版本，将本地版本库的头指针全部重置到指定版本，且会重置暂存区，即这次提交之后的所有变更都移动到工作区
+
+hard参数：git reset --hard HEAD～1 意为将版本库回退1个版本，但是不仅仅是将本地版本库的头指针全部重置到指定版本，也会重置暂存区，并且会将工作区代码清空（工作区是clean状态）
+
+注意，soft参数与默认参数都不会修改工作区代码，只有hard参数才会修改工作区代码。
+另外，git reset HEAD filename
+回退文件，将文件从暂存区回退到工作区（unstage），此时不能带hard,soft参数
+
+
+git reflog
+如果在回退以后又想再次回到之前的版本，git reflog 可以查看所有分支的所有操作记录（包括commit和reset的操作），包括已经被删除的commit记录，git log则不能察看已经删除了的commit记录
+
+
+比如说，回退到commit: zancun3，只需要：
+git reset --hard f3ef592 (或者HEAD@{49}) 即可
+这个命令对于找回丢失的代码非常有用。
+
+
+
+参考地址：https://www.jianshu.com/p/360bdda5157f

@@ -1,0 +1,59 @@
+function loadConstants(callback) {
+        var data = [
+                { name: "controllers" },
+                { name: "constants_zh_CN", map: "constants", lan: "C" },
+                { name: "constants_en_US", map: "constants", lan: "E" },
+                { name: "externUrl_zh_CN", map: "urls", lan: "C" },
+                { name: "externUrl_en_US", map: "urls", lan: "E" }
+            ],
+            total = data.length,
+            loaded = 0;
+
+        /**
+         * 检测加载进度
+         */
+        function checkLoaded() {
+            loaded += 1;
+            if (loaded === total && callback) {
+                callback();
+            }
+        }
+
+        function getConst(map, key) {
+            if (Common[map] && Common[map][lan]) {
+                return Common[map][lan][key] || "";
+            } else {
+                return "";
+            }
+        }
+
+        // 常量
+        Common.constants = {};
+        // URL
+        Common.urls = {};
+
+        CU.getConst = function (key) {
+            return $.trim(getConst("constants", key));
+        };
+
+        CU.getUrl = function (key) {
+            return $.trim(getConst("urls", key));
+        };
+        CU.get20Menu = function(key){
+            return getConst("menu15To20",key);
+        };
+        // 新加载
+        $.each(data, function(i, item) {
+            $.ajax({
+                url: "config/" + item.name + ".json?v=" + window.VERSION,
+                type:"get"
+            }).then(function(json) {
+                if (item.name === "controllers") {
+                    Common.controllerMap = json;
+                } else {
+                    Common[item.map][item.lan] = json;
+                }
+                checkLoaded();
+            });
+        });
+    }
