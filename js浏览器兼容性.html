@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/style.css" media="all" />
+	</head>
+	<body>
+		<div class="ml10">
+			<h3>浏览器内核简介</h3>
+			<br />
+			<div class="tb-box">
+				<table class="tb">
+					<thead>
+						<tr>
+							<th>浏览器</th>
+							<th>内核</th>
+							<th>备注</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr class="odd">
+							<td>IE</td>
+							<td>Trident</td>
+							<td>IE,猎豹安全，360急速浏览器，百度浏览器</td>
+						</tr>
+						<tr class="even">
+							<td>firefox</td>
+							<td>Gecko</td>
+							<td>火狐浏览器内核</td>
+						</tr>
+						<tr class="odd">
+							<td>Safari</td>
+							<td>Webkit</td>
+							<td>苹果浏览器内核</td>
+						</tr>
+						<tr class="even">
+							<td>Chrome/Opera</td>
+							<td>Blink</td>
+							<td>Chrome/Opera 浏览器内核。Blink其实是Webkit的分支</td>
+						</tr>
+					</tbody>
+				</table>
+				<p class="text-red"></p>
+			</div>
+			
+			<h3>1.获取兄弟标签的问题</h3>
+			<p>问题描述</p>
+			<p>1.nextElementSibling/previousElementSibling, 对IE只支持IE9及以上</p>
+			<p>2. nextSibling/previousSibling : 返回是标签之间的换行文本节点</p>
+			<div class="tb-box graybg">
+				解决:<br />
+				var preEle = ele.previousSibling;<br />
+				if(preEle.nodeType === 3) { <br />
+					//如果是文本节点类型, 再找上一个兄弟<br />
+				  preEle = preEle.previousSibling;<br />
+				}<br />
+			</div>
+			
+			<br />
+			
+			<h3>2.event</h3>
+			<p> event对象创建好后, 浏览器处理的方式不相同</p>
+			<p>1). 非标准IE只是将event对象保存为window的属性</p>
+			<p>2). chrome除了保存, 还将event作用函数传给回调方法了</p>
+			<p>3). firfox只是将event作用函数传给回调方法了</p>
+			<div class="tb-box graybg">
+				解决:<br />
+				event = event || window.event;<br />
+			</div>
+			
+			<br />
+			
+			<h3>3.滚动条坐标</h3>
+			<p> 在获取当前的滚动坐标时, 不同的浏览器不一样</p>
+			<p>1). chrome: document.body.scrollTop</p>
+			<p>2). 其它: document.documentElement.scrollTop</p>
+			<p>3). 一种浏览器只支持一种写法, 另一种写法返回0</p>
+			<div class="tb-box graybg">
+				解决:<br />
+				var sTop =document.body.scrollTop + document.documentElement.scrollTop<br />
+				//PS: scrollLeft值同理<br />
+			</div>
+			
+			<br />
+			
+			<h3>4.添加事件监听器的函数</h3>
+			<p>标准：obj.addEventListener(事件名称，事件函数，是否捕获);</p>
+			<p>1.有捕获</p>
+			<p>2.事件名称没有on</p>
+			<p>3.this触发该事件的对象</p>
+			
+			<p> IE：obj.attachEvent(事件名称，事件函数);</p>
+			<p>1.没有捕获</p>
+			<p>2.事件名称有on</p>
+			<p> 3.this指向window</p>
+			
+			<div class="tb-box graybg">
+				解决:<br />
+				/*<br />
+				 * 需求: 编写一个通用函数给指定UI对象设置指定的监听<br />
+				 */<br />
+				function bind (obj, eventName, fun) {<br />
+				  if(document.addEventListener) {<br />
+					obj.addEventListener(eventName, fun, false);<br />
+				  } else {<br />
+					obj.attachEvent("on"+eventName, function() {<br />
+					  fun.call(obj);<br />
+					});<br />
+				  }<br />
+				}<br />
+			</div>
+			
+			<br />
+			<h3>5.取消事件的默认行为</h3>
+			<p>在操作一些页面元素时会导致一些默认行为</p>
+			<p>比如: 点击<a>转向链接, 滑动滚轮页面滚动</p>
+			<div class="tb-box graybg">
+				解决:<br />
+				function stopDefault(e) {<br />
+				  // 阻止默认浏览器动作(W3C)<br />
+				  if ( e && e.preventDefault ) {<br />
+					e.preventDefault();<br />
+				  } else {<br />
+					// IE中阻止函数器默认动作的方式<br />
+					window.event.returnValue = false;<br />
+				  }<br />
+				  return false;<br />
+				}<br />
+			</div>
+			
+			<br />
+			
+			<h3>6.给元素添加滚轮滚动监听</h3>
+			<p>问题描述:  不同的浏览添加滚动监听的方式不一样</p>
+			<p>ie/chrome : onmousewheel</p>
+			<p>用event.wheelDelta获取</p>
+			<p>上：120</p>
+			<p>下：-120</p>
+			
+			<p>firefox :DOMMouseScroll 必须用addEventListener</p>
+			<p>event.detail</p>
+			<p>上：-3</p>
+			<p>下：3</p>
+			
+			<div class="tb-box graybg">
+				解决:<br />
+				if(document.body.onmousewheel == undefined) {<br />
+					//firefox<br />
+				  document.body.addEventListener("DOMMouseScroll", fun, false);<br />
+				} else { //IE和chrome<br />
+				  document.body.onmousewheel = fun;<br />
+				}<br />
+			</div>
+
+		</div>
+	</body>
+	
+</html>
