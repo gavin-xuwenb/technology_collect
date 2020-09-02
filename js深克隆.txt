@@ -1,0 +1,99 @@
+1 . JSON对象parse方法可以将JSON字符串反序列化成JS对象，stringify方法可以将JS对象序列化成JSON字符串,
+这两个方法结合起来就能产生一个便捷的深克隆.
+
+		const newObj = JSON.parse(JSON.stringify(oldObj));
+		
+缺陷：
+		1.他无法实现对函数 、RegExp等特殊对象的克隆;
+		2.会抛弃对象的constructor,所有的构造函数会指向Object;
+		3.对象有循环引用,会报错;
+		
+		
+		// 构造函数
+		function person(pname) {
+		  this.name = pname;
+		}
+		
+		const Messi = new person('Messi');
+		
+		// 函数
+		function say() {
+		  console.log('hi');
+		};
+		
+		const oldObj = {
+		  a: say,
+		  b: new Array(1),
+		  c: new RegExp('ab+c', 'i'),
+		  d: Messi
+		};
+		
+		const newObj = JSON.parse(JSON.stringify(oldObj));
+		
+		// 无法复制函数
+		console.log(newObj.a, oldObj.a); // undefined [Function: say]
+		// 稀疏数组 复制错误
+		console.log(newObj.b[0], oldObj.b[0]); // null undefined
+		// 无法复制正则对象
+		console.log(newObj.c, oldObj.c); // {} /ab+c/i
+		// 构造函数指向错误
+		console.log(newObj.d.constructor, oldObj.d.constructor); // [Function: Object] [Function: person]
+		
+		
+	2.自己实现一个函数
+	  思路 ： 1.循环遍历目标对象
+		       2.对象类型判断  
+					   var toString = Object.prototype.toString;
+						 
+						 typeof 返回的只是一个模糊的 'object'
+						 
+						 var typeStr = toString.call(obj)
+						 typeStr ==? '[object Array]' ,'[object RegExp]','[object Date]'
+					 3.递归
+					 
+3.深克隆实现示范
+
+function getType(obj){
+       //tostring会返回对应不同的标签的构造函数
+       var toString = Object.prototype.toString;
+       var map = {
+          '[object Boolean]'  : 'boolean', 
+          '[object Number]'   : 'number', 
+          '[object String]'   : 'string', 
+          '[object Function]' : 'function', 
+          '[object Array]'    : 'array', 
+          '[object Date]'     : 'date', 
+          '[object RegExp]'   : 'regExp', 
+          '[object Undefined]': 'undefined',
+          '[object Null]'     : 'null', 
+          '[object Object]'   : 'object'
+      };
+      if(obj instanceof Element) {
+           return 'element';
+      }
+      return map[toString.call(obj)];
+   }
+	 
+	 function deepClone(data){
+				var type = getType(data);
+				var obj;
+				if(type === 'array'){
+						obj = [];
+				} else if(type === 'object'){
+						obj = {};
+				} else {
+						//不再具有下一层次
+						return data;
+				}
+				if(type === 'array'){
+						for(var i = 0, len = data.length; i < len; i++){
+								obj.push(deepClone(data[i]));
+						}
+				} else if(type === 'object'){
+						for(var key in data){
+								obj[key] = deepClone(data[key]);
+						}
+				}
+				return obj;
+		}
+		对于function类型，这里是直接赋值的，还是共享一个内存值

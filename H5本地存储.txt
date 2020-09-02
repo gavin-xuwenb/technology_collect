@@ -1,0 +1,12 @@
+1.cookie
+cookie 有大小限制，一般为4K
+cookie 里面的数据每次请求都会发送到服务器端，浪费带宽
+
+2.sessionStorage
+当前窗口有效，保存在内存中，关闭窗口即清除（不同的标签页不共享），但是页面刷新不清除
+
+3.localStorage
+永久存储，保存到本地硬盘，同源策略 : 协议+IP(域名)+端口，多窗口共享
+
+
+setItem/getItem/remove/clear
