@@ -1,0 +1,46 @@
+1.盒子模型
+
+1.1 border
+border-width 宽度
+border-color 颜色
+border-style:solid  dashed  dotted  实线 虚线 点线
+
+合并写法
+border: 1px solid #fff; /*合并写法  包含4边同时设置*/
+border-top: 1px solid #fff; /*合并写法 单独设置一边*/
+border-collapse: collapse ; /* 为表格设置合并边框模型,一般用于table,td,th */
+
+1.2 padding--内边距
+padding 只能用于块级元素（display:block 或者 inline-block）
+如果设置了width ，padding 会撑开盒子的大小，不设置width就没问题
+
+技巧：给父类设定一个width,自己设定padding，不会撑开父亲的盒子大小
+
+1.3 margin--外边距
+  让块级元素 水平居中
+1)盒子必须指定宽度（不然独占一行，没有居中一说了）
+2)盒子的左右外边距都设置为auto
+  margin:0 auto;
+
+如何让一个行内元素span（或者行内块元素img）水平居中：让父类盒子设置 text-align:center
+
+1.4 嵌套块元素垂直外边距塌陷
+    解决方案
+      1.父类定义一个上边框 (透明)
+        border-top:1px solid transparent;
+    	2.父类定义一个上内边距 padding-top
+      3.父类元素添加 overflow:hidden
+			
+1.5 清除内外边距
+* {
+	padding: 0;
+	margin: 0;
+}
+***********************************************************************************
+
+2.文字实现垂直居中
+  父类盒子设置一个width，line-height = width;
+	
+***********************************************************************************
+3.
+
