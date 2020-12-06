@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<a href="http://f.hiphotos.baidu.com/image/pic/item/3ac79f3df8dcd1008742b1cc788b4710b8122f04.jpg"  download>加download属性</a>
+	    <a href="http://f.hiphotos.baidu.com/image/pic/item/3ac79f3df8dcd1008742b1cc788b4710b8122f04.jpg">不加download属性</a>
+	    <a href="javaScript:void(0)" onclick="downloadFile('http://f.hiphotos.baidu.com/image/pic/item/3ac79f3df8dcd1008742b1cc788b4710b8122f04.jpg','abc')">点击事件</a>
+	    
+		<script>
+			
+			function downloadFile(url, fileName) {
+			    var x = new XMLHttpRequest();
+			    x.open("GET", url, true);
+			    x.responseType = 'blob';
+			    x.onload=function(e) {
+			        var url = window.URL.createObjectURL(x.response)
+			        var a = document.createElement('a');
+			        a.href = url
+			        a.download = fileName;
+			        a.click()
+			    }
+			    x.send();
+			}
+		</script>
+	</body>
+</html>

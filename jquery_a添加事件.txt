@@ -1,0 +1,1 @@
+$(selector).on(event,childSelector,data,function)

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			#box {
+				width: 100px;
+				height: 100px;
+				padding: 10px;
+				border: 10px solid #FF1414;
+				background-color: yellow;
+			}
+			
+			#box4 {
+				width: 200px;
+				height: 300px;
+				background-color: #bfa;
+				overflow: auto;
+			}
+			
+			#box5 {
+				width: 320px;
+				height: 600px;
+				background-color: yellow;
+			}
+		</style>
+		<script>
+			window.onload = function(){
+				var btn = document.getElementById('btn');
+				var box = document.getElementById('box');
+				var box4 = document.getElementById('box4');
+				btn.onclick = function(){
+					/**
+					 * clientHeight
+					 * clientWidth
+					 * --获取元素的‘可见’高度和宽度（只读）
+					 * --返回值不带单位px
+					 * --返回的值是内容区width+内边距padding(不含边框border)
+					 */
+					console.log(box.clientHeight); //返回120
+					console.log(box.clientWidth); //返回120
+					
+					/**
+					 * offsetHeight
+					 * offsetWidth
+					 * --获取元素的整个高度和宽度（只读）
+					 * --返回值不带单位px
+					 * --返回的值是内容区width+内边距padding+边框border
+					 */
+					console.log(box.offsetHeight); //返回140
+					console.log(box.offsetWidth); //返回140
+					
+					/**
+					 * offsetParent
+					 * 获取当前元素的定位父元素
+					 * 离当前元素“最近”的开启了定位（position 不为默认值static）的祖先元素
+					 * 如果所有的祖先元素都没有开启定位，则返回body
+					 */
+					var p = box.offsetParent;
+					console.log(p.id); //返回box1
+					
+					//offsetLeft:当前元素相对于其定位元素的水平偏移量
+					console.log(box.offsetLeft);
+					//offsetTop:当前元素相对于其定位元素的垂直偏移量
+					console.log(box.offsetTop);
+					
+					
+					
+					
+					
+					
+					/**
+					 * scrollHeight:整个滚动区域的高度，包含隐藏的区域
+					 * scrollWidth:整个滚动区域的宽度度，包含隐藏的区域
+					 */
+					
+					console.log(box4.scrollHeight); //600
+					console.log(box4.scrollWidth); //320
+					
+					
+					/**
+					 * scrollLeft:获取水平滚动条 滚动的距离
+					 * scrollTop:获取垂直滚动条 滚动的距离
+					 */
+					console.log(box4.scrollLeft); //动态的值
+					console.log(box4.scrollTop); //动态的值
+					
+					
+					//出现滚动条的时候，某些浏览器版本，滚动条本身是有宽度
+					//所有clientHeight 可能得减去滚动宽度
+					console.log(box4.clientHeight);
+					
+					/**
+					 * 当满足 scrollHeight - scrollTop == clientHeight
+					 * 说明垂直滚动条 滚到底了
+					 * 
+					 * 
+					 * 当满足 scrollWidth - scrollLeft == clientWidth
+					 * 说明水平滚动条 滚到最右边了
+					 */
+					console.log(box4.scrollHeight - box4.scrollTop); 
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<button id="btn">点我一下</button>
+		<br />
+		<br />
+		<div id="box4">
+			<div id="box5"></div>
+		</div>
+		<br />
+		<br />
+		<div id="box1" style="position: relative;">
+			<div id="box2" >
+				<div id="box"></div>
+			</div>
+		</div>
+	</body>
+</html>

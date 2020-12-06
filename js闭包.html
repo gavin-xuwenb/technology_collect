@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<!--
+		闭包产生的条件：
+			1.函数嵌套
+			2.内部函数引用了外部函数的变量
+		闭包的生命周期：
+			外部函数被执行（此时内部函数被定义出来），此时就产生了闭包
+			指向内部函数的变量被设置为null，就是说内部函数对象没有再被任何变量引用。此时闭包就死亡
+		闭包的作用：
+			延长局部变量的死亡时间
+		闭包的缺陷:
+			容易内存泄漏
+		-->
+		<script type="text/javascript">
+			function fun(n,o){
+				console.log(o)
+				return {
+					fun:function(m){
+						return fun(m,n)
+					}
+				}
+			}
+			
+			var a=fun(0); //输出undefined 
+			a.fun(1)  //m=1,n=0  ,此时o为n，输出0，
+			a.fun(2)  //输出0
+			a.fun(3)  //输出0
+			
+			
+			//fun(0) 输出 undefined，返回一个对象
+			//fun(1) ,m=1  ,返回一个外部函数fun，外部函数里面没有再次定义函数，所有执行fun(2)时报错
+			var b=fun(0).fun(1).fun(2).fun(3)
+			
+			
+			//var c=fun(0).fun(1)
+			//c.fun(2)
+			
+		</script>
+	</body>
+</html>

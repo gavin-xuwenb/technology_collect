@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			div {
+				width: 100px;
+				height: 100px;
+				background-color: yellow;
+			}
+		</style>
+		<script>
+			window.onload = function(){
+				var btn = document.getElementById('btn');
+				var box = document.getElementById('box');
+				btn.onclick = function(){
+					//box.style.width 只能获取到内联样式
+					console.log(box.style.width); //返回空
+					console.log(getStyle(box,"width"));
+				}
+			}
+			
+			/**
+			 * @param {Object} target 元素对象
+			 * @param {Object} styleName 样式名称
+			 */
+			function getStyle(target,styleName){
+				//getComputedStyle() 这个是非IE 浏览器拥有的内置方法
+				//currentStyle 是IE8及以上元素拥有的属性
+				return window.getComputedStyle?getComputedStyle(target,null)[styleName]:target.currentStyle[styleName];
+			}
+		</script>
+	</head>
+	<body>
+		<button id="btn">按钮</button>
+		<br />
+		<br />
+		<div id="box"></div>
+	</body>
+</html>
