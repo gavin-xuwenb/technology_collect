@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>报文格式化</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: rgb(245, 245, 245);
+        }
+
+        .container {
+            width: 100%;
+            height: 90%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container .left {
+            width: 35%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container .center {
+            width: 8%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+            flex-direction: column;
+        }
+
+        .container .center .format {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 100%;
+            width: 100px;
+            height: 100px;
+            background: rgb(207, 213, 218);
+            text-decoration: none;
+            color: white;
+            /* box-shadow: 0 3px 2px 1px rgba(0, 0, 0, .2); */
+            z-index: 1;
+            cursor: pointer;
+            letter-spacing: 4px;
+            font-weight: bold;
+        }
+
+        .container .center .format::after,
+        .container .center .format::before {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            margin-left: -50px;
+            margin-top: -50px;
+            background-image: linear-gradient(45deg, rgb(231, 231, 236), rgb(105, 105, 119));
+            border-radius: 100%;
+            width: 98px;
+            height: 98px;
+            z-index: -1;
+            transform: translateY(-10px);
+            /* filter: blur(4px); */
+        }
+
+        .container .center .format::after {
+            animation: rotate 4s infinite linear;
+        }
+
+        .container .center .format::before {
+            animation: rotate 2s infinite linear;
+        }
+
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg) translateY(-2px);
+            }
+
+            100% {
+                transform: rotate(360deg) translateY(-2px);
+            }
+        }
+
+        .container .right {
+            width: 55%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        textarea {
+            padding: 10px;
+            width: 100%;
+            height: 100%;
+            background-color: #f7f3f3;
+            overflow: auto;
+            resize: none;
+            outline: none;
+            color: steelblue;
+            font-size: 20px;
+            border-radius: 10px;
+            font-family: "Microsoft YaHei", Arial, sans-serif;
+            box-sizing: border-box;
+        }
+
+        .container .title {
+            text-align: center;
+            height: 80px;
+            line-height: 80px;
+            font-size: 50px;
+            letter-spacing: 4px;
+            -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-background-clip: text;
+            background-image: linear-gradient(90deg, #03a9f4, #a88ca8, #6ac287, #03a9f4);
+            background-size: 400%;
+            animation: corlors 8s infinite;
+            text-transform: uppercase;
+        }
+
+        @keyframes corlors {
+            100% {
+                background-position: -400% 0;
+            }
+        }
+    </style>
+</head>
+
+<body oncontextmenu="return false;">
+    <div class="container">
+        <div class="left">
+            <div class="title">输入Js<span>o</span>n</div>
+            <textarea id="in" cols="30" rows="10" placeholder="请输入json报文."></textarea>
+        </div>
+        <div class="center">
+            <div class="format" id="format">format</div>
+            <div class="format" id="clear">clear</div>
+        </div>
+        <div class="right">
+            <div class="title">查看结果</div>
+            <textarea readonly="readonly" disabled="disabled" id="out" cols="30" rows="10"></textarea>
+        </div>
+    </div>
+    <script>
+        window.onload = function () {
+            let oIn = document.getElementById("in");
+            let oFormat = document.getElementById("format");
+            let oclear = document.getElementById("clear");
+            let oOut = document.getElementById("out");
+            //格式化
+            oFormat.addEventListener("click", function () {
+                let val = oIn.value;
+                if (val) {
+                    let obj = JSON.parse(val);
+                    let str = JSON.stringify(obj, null, 4);
+                    oOut.value = str;
+                }
+            });
+            //清空
+            oclear.addEventListener("click", function () {
+                oIn.value = "";
+                oOut.value = "";
+                oIn.focus();
+            });
+
+        };
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			img {
+				font-family: 'STKaiti';
+				font-weight: 300;
+				line-height: 2;
+				text-align: center;
+	
+				width: 200px;
+				height: 200px;
+				display: block;
+				position: relative;
+			}
+			
+			img:after {
+				content: "123";
+				position: absolute;
+				z-index: 2;
+				top: 0;
+				left: 0;
+                width: 100%;
+				height: 100%;
+				background-image: url('https://pic.bankofchina.com/bocappd/ad/cnad1/202010/W020201109273418218768.jpg');
+			}
+		</style>
+	</head>
+	<body>
+		<img src="http://nopic.jpg" alt="休要胡说"/>
+	</body>
+</html>

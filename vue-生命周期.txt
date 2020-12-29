@@ -1,0 +1,15 @@
+beforeCreate:
+	this.$el       DOM未挂载
+	this.$data     data数据未初始化
+	适合 加loading事件
+created:
+	this.$el    DOM未挂载
+	this.$data  已被初始化
+	结束loading、请求数据为mounted渲染做准备
+	如果在这里需要对DOM做些操作，使用 nextTick(callback)
+beforMounted:
+	vue实例的$el和data都初始化了，但还是虚拟的dom节点
+mounted
+	this.$el    已被初始化
+	在这发起后端请求，拿回数据，配合路由钩子做一些事情
+	
