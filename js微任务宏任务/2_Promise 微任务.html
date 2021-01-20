@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	
+	<body>
+		<script>
+			setTimeout(()=>{
+				console.log("setTimeout1");
+				
+				new Promise(resolve=>{
+					//这里是同步代码块
+					console.log("setTimeout promise")
+					resolve();
+				}).then(()=>{
+					//这里是一步执行的
+					console.log("setTimeout then");
+				});
+			},0)
+			
+			new Promise(resolve=>{
+				//这里是同步代码块
+				console.log("promise")
+				resolve();
+			}).then(()=>{
+				//这里是一步执行的
+				console.log("then");
+			});
+			
+			for(let i=0;i<10000;i++){
+				console.log('')
+			}
+			
+			/**
+			 * 输出顺序 
+			 * 		promise
+			 *		for 循环里面是输出空字符串
+			 * 		then
+			 * 		setTimeout1
+			 * 		setTimeout promise
+			 * 		setTimeout then
+			 */
+		</script>
+	</body>
+</html>

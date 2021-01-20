@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script>
+			window.onload = function(){
+				function debounce(fn,wait){
+					var time = null;
+					console.log("time="+time);
+					return function(){
+						if(time!=null) clearTimeout(time);
+						time = setTimeout(fn,wait);
+					}
+				}
+				
+				function handle(){
+					console.log(Math.random()); 
+				}
+				window.addEventListener('scroll',debounce(handle,1000));
+			}
+		</script>
+	</head>
+	<body>
+		<div style="height:1200px;">
+			
+		</div>
+	</body>
+</html>

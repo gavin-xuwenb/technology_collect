@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script>
+			//手写 Promsie
+			class Promsie {
+			    constructor(fn) {
+			        //三个状态
+			        this.status = 'pending',
+			        this.resolve = undefined;
+			        this.reject = undefined;
+			        let resolve = value => {
+			            if (this.status === 'pending') {
+			                this.status = 'resolved';
+			                this.resolve = value;
+			            }
+			        };
+			        let reject = value => {
+			            if (this.status === 'pending') {
+			                this.status = 'rejected';
+			                this.reject = value;
+			            }
+			        }
+			        try {
+			            fn(resolve, reject)
+			        } catch (e) {
+			            reject(e)
+			        }
+			    }
+			    then(onResolved, onRejected) {
+			        switch (this.status) {
+			            case 'resolved': onResolved(this.resolve); break;
+			            case 'rejected': onRejected(this.resolve); break;
+			            default:
+			        }
+			    }
+			
+			}
+			
+			//手写 promiseAll
+			function promiseAll(promises) {
+			            if (!Array.isArray(promises)) {
+			                throw new Error("promises must be an array")
+			            }
+			            return new Promise(function (resolve, reject) {
+			
+			                let promsieNum = promises.length;
+			                let resolvedCount = 0;
+			                let resolveValues = new Array(promsieNum);
+			                for (let i = 0; i < promsieNum; i++) {
+			                    Promise.resolve(promises[i].then(function (value) {
+			                        resolveValues[i] = value;
+			                        resolvedCount++;
+			                        if (resolvedCount === promsieNum) {
+			                            return resolve(resolveValues)
+			                        }
+			                    }, function (reason) {
+			                        return reject(reason);
+			                    }))
+			
+			                }
+			            })
+			        }
+					
+			// 手写实现promise.race
+			// Promise.race() 它同样接收一个promise对象组成的数组作为参数，并返回一个新的promise对象。
+			
+			// 与Promise.all()不同，它是在数组中有一个对象（最早改变状态）resolve或reject时，就改变自身的状态，并执行响应的回调。		
+			function promiseRace(promises) {
+				if (!Array.isArray(promises)) {
+					throw new Error("promises must be an array")
+				}
+				return new Promise(function (resolve, reject) {
+					promises.forEach(p =>
+						Promise.resolve(p).then(data => {
+							resolve(data)
+						}, err => {
+							reject(err)
+						})
+					)
+				})
+			}
+		</script>
+	</head>
+	<body>
+	</body>
+</html>

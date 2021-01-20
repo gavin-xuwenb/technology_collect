@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			#box{
+				height: 20px;
+				background-color: #03A9F4;
+			}
+		</style>
+	</head>
+	
+	<body>
+		<div id="box"></div>
+		<script>
+			var  hd = document.getElementById("box");
+			function hendle(){
+				let i = 0;
+				(function run(){
+					hd.innerHTML = i+"%";
+					hd.style.width = i+"%";
+					if(i++ < 100){
+						setTimeout(run,200);
+					}
+				})()
+			}
+			
+			hendle();
+		</script>
+	</body>
+</html>

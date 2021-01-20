@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		
+		<!-- 
+		 BFC（Block Formatting Context）格式化上下文，
+		 是Web页面中盒模型布局的CSS渲染模式，
+		 指一个独立的渲染区域或者说是一个隔离的独立容器。
+		 
+		 形成BFC的条件:
+			1、浮动元素，float 除 none 以外的值； 
+			2、定位元素，position（absolute，fixed）； 
+			3、display 为以下其中之一的值 inline-block，table-cell，table-caption； 
+			4、overflow 除了 visible 以外的值（hidden，auto，scroll）；
+		BFC的特性:
+			1.垂直方向上的距离由margin决定 (会重叠)
+			2.bfc的区域不会与float的元素区域重叠。
+			3.计算bfc的高度时，浮动元素也参与计算
+			4.bfc就是页面上的一个独立容器，容器里面的子元素不会影响外面元素。
+		-->
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			.box1{
+				height: 30px;
+				width: 100px;
+				background-color: red;
+				float: left;
+			}
+			
+			p{
+				overflow: hidden;
+			}
+			
+			/**
+			 * 2.父元素没有设置高度，完全由子元素撑开，
+				一旦子元素设置了浮动，父元素高度则会塌陷
+				解决方案：设置父元素 overflow: hidden; （只要不是visible都可以,visible是默认值）
+			 */
+			.container{
+				border: solid 1px red;
+				overflow: hidden;
+			}
+			.box2{
+				height: 30px;
+				width: 100px;
+				background-color: green;
+				float: left;
+			}
+			
+			/**
+			 * 3.多个盒子是按照垂直方向排列的
+				盒子之间的垂直距离有margin觉得，但是不是累加，而是重叠
+				
+				解决方案，将某个盒子套一个BFC，设置overflow:hidden
+			 */
+			
+			
+			/**
+			 * 4.清除浮动
+				 给父元素加一个伪类
+			 */
+			
+			.box3{
+				background-color: blue;
+				border: solid 1px orange;
+				/**overflow: hidden;**/
+			}
+			
+			.clearfix::after{
+				content: "";
+				clear: both;
+				display: block;
+			}
+			.clearfix{
+				zoom:1; /*兼容IE6*/
+			}
+			
+			.box4{
+				height: 300px;
+				width: 300px;
+				background-color: green;
+				float: left;
+			}
+			.box5{
+				height: 300px;
+				width: 300px;
+				background-color: yellow;
+				float: right;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<div class="box1"></div>
+		<p>如果box1 设定了 浮动，文字环绕在box周围，可以开启BFC，让文字不再出现环绕的效果，代码效果运行一下就ok。
+		我时候p标签，我是p标签内容，哈哈哈哈哈哈,如果box1 设定了 浮动，文字环绕在box周围，可以开启BFC，让文字不再出现环绕的效果，代码效果运行一下就ok。
+		我时候p标签，我是p标签内容，哈哈哈哈哈哈,如果box1 设定了 浮动，文字环绕在box周围，可以开启BFC，让文字不再出现环绕的效果，代码效果运行一下就ok。
+		我时候p标签，我是p标签内容，哈哈哈哈哈哈,如果box1 设定了 浮动，文字环绕在box周围，可以开启BFC，让文字不再出现环绕的效果，代码效果运行一下就ok。
+		我时候p标签，我是p标签内容，哈哈哈哈哈哈,如果box1 设定了 浮动，文字环绕在box周围，可以开启BFC，让文字不再出现环绕的效果，代码效果运行一下就ok。
+		我时候p标签，我是p标签内容，哈哈哈哈哈哈
+		</p>
+		
+		<div class="container">
+			<div class="box2"></div>
+		</div>
+		
+		<div>
+			<div class="box3 clearfix">
+				<div class="box4"></div>
+				<div class="box5"></div>
+			</div>
+		</div>
+	</body>
+</html>

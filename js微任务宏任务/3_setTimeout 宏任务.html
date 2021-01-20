@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+	</body>
+</html>
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	
+	<body>
+		<script>
+			
+			 /****setTimeout****/
+			 /**
+			  * setTimeout 浏览器有单独的一个定时器模块
+			  * 
+			  * 遇到setTimeout，放入到定时器模块，立马开始计时（多个定时器互相独立），
+			  * 	哪个时间到了，就放入到 宏任务列表中，先到时的，后续优先执行
+			  * 
+			  * 以下代码，先执行for循环，执行for循环需要时间，
+			  * 		并不是for执行完成之后才开始计时
+			  * 现象：for循环一执行完成（可能执行超过3秒），
+			  * 	并不需要再次等待,立马输出setTimeout3 setTimeout2
+			  * 
+			  *   setTimeout3 先倒计时结束，先进入宏任务队列，先执行
+			  * */
+			 setTimeout(()=>{
+			 	console.log("setTimeout2")
+			 },3000);
+			 
+			 setTimeout(()=>{
+			 	console.log("setTimeout3")
+			 },2000);
+			 
+			 for(let i=0;i<10000;i++){
+				 console.log('')
+			 }
+		</script>
+	</body>
+</html>
