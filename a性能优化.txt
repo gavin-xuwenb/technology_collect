@@ -1,0 +1,39 @@
+1.减少http请求次数与大小--合并压缩，雪碧图
+2.图片懒加载
+3.DNS缓存，304缓存
+4.尽可能避免回流和重绘
+	|-- 放弃传统的操作dom，基于vue/react 数据影响视图模式
+			|--虚拟DOM，dom diff..
+    |-- 分离读写操作
+			|-- 渲染队列，同类多个操作 一次渲染
+			    let box = document.getElementById('box');
+				box.style.width = '100px';
+				box.style.hight = '100px';
+				console.log(box.clientWidth); //遇到读操作，会2次回流，没有这句话，只会回流一次
+				box.style.margin = '10px';
+    |-- 样式集中改变
+			|--批量处理，防止被读乱入
+				box.style.cssText = 'width:200px;height:200px';
+				或者 box.className = 'className'; 
+	|-- 缓存布局信息
+			|--//两次回流
+			   box.style.width = box.clientWidth + 10 + "px";
+			   box.style.height = box.clientHeight + 10 + "px"; 
+			改成：
+				//一次回流
+				let a = box.clientWidth;
+				let b = box.clientHeight;
+				box.style.width = a + 10 + "px";
+				box.style.height = b + 10 + "px";			
+	|-- 文档碎片（不常用），更加优化的写法，字符串拼接
+		let frg =  document.creatDocumentFragment();
+		//用完即时销毁
+		frg = null;
+	|-- 动画效果，开启position，脱离文档流（替代margin的方式）
+	|-- CSS3硬件加速（GPU加速）
+		能用transform，opacity,filter...尽量用，它会开启硬件加速，规避回流
+	|-- 牺牲平滑换区速度
+		移动，比如每次移动1px ，非常的平滑
+			 每次移动10px，会出现卡顿现象
+	|-- 避免table布局
+	
